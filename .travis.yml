@@ -8,6 +8,11 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+services:
+  - mongodb
+  - memcached
+  - redis-server
+
 before_script:
   - composer self-update
   - composer install --prefer-dist -n
