@@ -1,3 +1,7 @@
+[![codecov](https://codecov.io/gh/wshafer/psr11-phpcache/branch/master/graph/badge.svg)](https://codecov.io/gh/wshafer/psr11-phpcache)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wshafer/psr11-phpcache/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wshafer/psr11-phpcache/?branch=master)
+[![Build Status](https://travis-ci.org/wshafer/psr11-phpcache.svg?branch=master)](https://travis-ci.org/wshafer/psr11-phpcache)
+
 # PSR-11 PHP Cache
 
 [PHP Cache](http://www.php-cache.com/en/latest/) Factories for PSR-11
@@ -378,14 +382,16 @@ $container['cache'] = new \WShafer\PSR11PhpCache\PhpCacheFactory();
 $container['otherCache'] = function($c) {
     return WShafer\PSR11PhpCache\PhpCacheFactory::cacheTwo($c);
 };
+
 ```
 
 # Configuration
-    Named Services : These are services names wired up to a factory. The configuration will differ based on the type of container / framework in use.
+ - Named Services : These are services names wired up to a factory. The configuration will differ based on the 
+   type of container / framework in use.
     
-    [Adapters](#adapters) : Cache Pool config tell us what type of cache to use and how to connect to that cache.
-    Some caches provide other special options on how to handle the data and what data to handle.  See the
-    appropriate apdaptor config below.
+ - [Adapters](#adapters) : Cache Pool config tell us what type of cache to use and how to connect to that cache.
+   Some caches provide other special options on how to handle the data and what data to handle.  See the
+   appropriate apdaptor config below.
 
 
 ## Minimal Configuration
