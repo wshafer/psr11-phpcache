@@ -451,9 +451,9 @@ return [
          * be sent to the void.
          */
         'default' => [
-            'type'      => 'apc',          // Required : Type of adapter
+            'type'      => 'array',        // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
             'options'   => [],             // Optional : Adapter Specific Options
         ],
@@ -462,20 +462,18 @@ return [
         'cacheTwo' => [
             'type'      => 'apcu',         // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
             'options'   => [],             // Optional : Adapter Specific Options
         ],
         
         // Cache Chain
         'chained' => [
-            'type' => 'chain',
+            'type' => 'chain',                              // Required : Type of adapter
             'options' => [
-                'caches' => [
-                    'default',
-                    'cacheTwo',
-                ],
-            ],
+                'service'       => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+            ]
         ],
     ],
 ];
