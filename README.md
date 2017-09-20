@@ -487,6 +487,10 @@ This is a PSR-6 cache implementation using Apc. It is a part of the PHP Cache or
 To read about features like tagging and hierarchy support please read the shared 
 documentation at [www.php-cache.com](http://www.php-cache.com/en/latest/).
 
+_Note: APC extension is not directly supported in PHP 7.  You can use the APC_BC package on 
+PHP 7 for APCU backwards compatibility, but it is recommended 
+to simply the use the [APCu](#apcu) cache below._
+
 ```php
 <?php
 
