@@ -38,13 +38,13 @@ class PhpCacheFactory
             $pool->setLogger($logger);
         }
 
-        if ($serviceConfig->getNamespace()
+        if (!empty($serviceConfig->getNamespace())
             && $pool instanceof HierarchicalPoolInterface
         ) {
             return new NamespacedCachePool($pool, $serviceConfig->getNamespace());
         }
 
-        if ($serviceConfig->getPrefix()) {
+        if (!empty($serviceConfig->getPrefix())) {
             return new PrefixedCachePool($pool, $serviceConfig->getPrefix());
         }
 
