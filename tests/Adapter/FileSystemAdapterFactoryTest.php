@@ -63,5 +63,4 @@ class FileSystemAdapterFactoryTest extends TestCase
             'folder' => 'some-folder'
         ]);
     }
-
 }

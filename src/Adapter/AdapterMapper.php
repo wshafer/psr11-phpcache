@@ -5,35 +5,38 @@ namespace WShafer\PSR11PhpCache\Adapter;
 
 class AdapterMapper
 {
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function map($type)
     {
         $type = strtolower($type);
 
         switch ($type) {
-            case 'apc' :
+            case 'apc':
                 return new ApcAdapterFactory();
-            case 'apcu' :
+            case 'apcu':
                 return new ApcuAdapterFactory();
-            case 'array' :
+            case 'array':
                 return new ArrayAdapterFactory();
             case 'chain':
                 return new ChainCacheAdapterFactory();
             case 'doctrine':
                 return new DoctrineCacheAdapterFactory();
-            case 'filesystem' :
+            case 'filesystem':
                 return new FileSystemAdapterFactory();
-            case 'illuminate' :
+            case 'illuminate':
                 return new IlluminateAdapterFactory();
-            case 'memcached' :
+            case 'memcached':
                 return new MemcachedAdapterFactory();
-            case 'mongodb' :
-            case 'mongo' :
+            case 'mongodb':
+            case 'mongo':
                 return new MongoAdapterFactory();
-            case 'predis' :
+            case 'predis':
                 return new PredisAdapterFactory();
-            case 'redis' :
+            case 'redis':
                 return new RedisAdapterFactory();
-            case 'void' :
+            case 'void':
                 return new VoidAdapterFactory();
         }
 

@@ -22,8 +22,8 @@ class MongoAdapterFactory implements FactoryInterface
     {
         if (!extension_loaded('mongodb')) {
             throw new MissingExtensionException(
-                'mongodb extension not installed.
-            ');
+                'mongodb extension not installed.'
+            );
         }
 
         if (!class_exists(Collection::class)) {
@@ -67,10 +67,18 @@ class MongoAdapterFactory implements FactoryInterface
         return $this->getInstanceFromConfig($options);
     }
 
-    protected function getInstanceFromContainer(ContainerInterface $container, $name) {
+    protected function getInstanceFromContainer(ContainerInterface $container, $name)
+    {
         return $container->get($name);
     }
 
+    /**
+     * @param array $options
+     *
+     * @return Collection
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     protected function getInstanceFromConfig(array $options)
     {
         $dsn            = $options['dsn']        ?? null;

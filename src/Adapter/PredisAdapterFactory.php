@@ -60,7 +60,8 @@ class PredisAdapterFactory implements FactoryInterface
      *
      * @return Client
      */
-    protected function getInstanceFromContainer(ContainerInterface $container, $name) {
+    protected function getInstanceFromContainer(ContainerInterface $container, $name)
+    {
         return $container->get($name);
     }
 

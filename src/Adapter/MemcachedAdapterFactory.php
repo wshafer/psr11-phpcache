@@ -66,7 +66,8 @@ class MemcachedAdapterFactory implements FactoryInterface
         return $this->getInstanceFromConfig($options);
     }
 
-    protected function getInstanceFromContainer(ContainerInterface $container, $name) {
+    protected function getInstanceFromContainer(ContainerInterface $container, $name)
+    {
         return $container->get($name);
     }
 
@@ -103,8 +104,7 @@ class MemcachedAdapterFactory implements FactoryInterface
             );
         }
 
-        foreach ($serverList as $addedServer)
-        {
+        foreach ($serverList as $addedServer) {
             if ($addedServer['host'] == $host
                 && $addedServer['port'] == $port
             ) {

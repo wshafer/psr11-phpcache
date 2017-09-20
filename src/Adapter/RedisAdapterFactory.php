@@ -59,7 +59,8 @@ class RedisAdapterFactory implements FactoryInterface
      *
      * @return \Redis
      */
-    public function getInstanceFromContainer(ContainerInterface $container, $name) {
+    public function getInstanceFromContainer(ContainerInterface $container, $name)
+    {
         return $container->get($name);
     }
 

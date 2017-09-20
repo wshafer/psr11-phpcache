@@ -59,5 +59,4 @@ class IlluminateAdapterFactoryTest extends TestCase
             'store' => 'my-service'
         ]);
     }
-
 }
