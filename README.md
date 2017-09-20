@@ -98,31 +98,29 @@ $container = new \Xtreamwayz\Pimple\Container([
              * be sent to the void.
              */
             'default' => [
-                'type'      => 'apc',          // Required : Type of adapter
+                'type'      => 'void',         // Required : Type of adapter
                 'namespace' => 'my-namespace', // Optional : Namespace
-                'prefix'    => 'prefix_',      // Optional : Prefix
+                'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
                 'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
-                'options'   => [],             // Optional : Apdapter Specific Options
+                'options'   => [],             // Optional : Adapter Specific Options
             ],
             
             // Another Cache
             'cacheTwo' => [
-                'type'      => 'apcu',         // Required : Type of adapter
+                'type'      => 'memcached',    // Required : Type of adapter
                 'namespace' => 'my-namespace', // Optional : Namespace
-                'prefix'    => 'prefix_',      // Optional : Prefix
+                'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
                 'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
-                'options'   => [],             // Optional : Apdapter Specific Options
+                'options'   => [],             // Optional : Adapter Specific Options
             ],
             
             // Cache Chain
             'chained' => [
-                'type' => 'chain',
+                'type' => 'chain',                              // Required : Type of adapter
                 'options' => [
-                    'caches' => [
-                        'default',
-                        'cacheTwo',
-                    ],
-                ],
+                    'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                    'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+                ]
             ],
         ],
     ],
@@ -150,31 +148,29 @@ $container->setService('config', [
          * be sent to the void.
          */
         'default' => [
-            'type'      => 'apc',          // Required : Type of adapter
+            'type'      => 'void',         // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
-            'options'   => [],             // Optional : Apdapter Specific Options
+            'options'   => [],             // Optional : Adapter Specific Options
         ],
         
         // Another Cache
         'cacheTwo' => [
-            'type'      => 'apcu',         // Required : Type of adapter
+            'type'      => 'memcached',    // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
-            'options'   => [],             // Optional : Apdapter Specific Options
+            'options'   => [],             // Optional : Adapter Specific Options
         ],
         
         // Cache Chain
         'chained' => [
-            'type' => 'chain',
+            'type' => 'chain',                              // Required : Type of adapter
             'options' => [
-                'caches' => [
-                    'default',
-                    'cacheTwo',
-                ],
-            ],
+                'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+            ]
         ],
     ],
 ]);
@@ -209,31 +205,29 @@ return [
          * be sent to the void.
          */
         'default' => [
-            'type'      => 'apc',          // Required : Type of adapter
+            'type'      => 'void',         // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
             'options'   => [],             // Optional : Adapter Specific Options
         ],
         
         // Another Cache
         'cacheTwo' => [
-            'type'      => 'apcu',         // Required : Type of adapter
+            'type'      => 'memcached',    // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
             'options'   => [],             // Optional : Adapter Specific Options
         ],
         
         // Cache Chain
         'chained' => [
-            'type' => 'chain',
+            'type' => 'chain',                              // Required : Type of adapter
             'options' => [
-                'caches' => [
-                    'default',
-                    'cacheTwo',
-                ],
-            ],
+                'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+            ]
         ],
     ],
 ];
@@ -266,31 +260,29 @@ return [
          * be sent to the void.
          */
         'default' => [
-            'type'      => 'apc',          // Required : Type of adapter
+            'type'      => 'void',         // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
             'options'   => [],             // Optional : Adapter Specific Options
         ],
         
         // Another Cache
         'cacheTwo' => [
-            'type'      => 'apcu',         // Required : Type of adapter
+            'type'      => 'memcached',    // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
-            'prefix'    => 'prefix_',      // Optional : Prefix
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
             'options'   => [],             // Optional : Adapter Specific Options
         ],
         
         // Cache Chain
         'chained' => [
-            'type' => 'chain',
+            'type' => 'chain',                              // Required : Type of adapter
             'options' => [
-                'caches' => [
-                    'default',
-                    'cacheTwo',
-                ],
-            ],
+                'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+            ]
         ],
     ],
 ];
@@ -342,31 +334,29 @@ $config = [
              * be sent to the void.
              */
             'default' => [
-                'type'      => 'apc',          // Required : Type of adapter
+                'type'      => 'void',         // Required : Type of adapter
                 'namespace' => 'my-namespace', // Optional : Namespace
-                'prefix'    => 'prefix_',      // Optional : Prefix
+                'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
                 'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
                 'options'   => [],             // Optional : Adapter Specific Options
             ],
             
             // Another Cache
             'cacheTwo' => [
-                'type'      => 'apcu',         // Required : Type of adapter
+                'type'      => 'memcached',    // Required : Type of adapter
                 'namespace' => 'my-namespace', // Optional : Namespace
-                'prefix'    => 'prefix_',      // Optional : Prefix
+                'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
                 'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
                 'options'   => [],             // Optional : Adapter Specific Options
             ],
             
             // Cache Chain
             'chained' => [
-                'type' => 'chain',
+                'type' => 'chain',                              // Required : Type of adapter
                 'options' => [
-                    'caches' => [
-                        'default',
-                        'cacheTwo',
-                    ],
-                ],
+                    'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                    'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+                ]
             ],
         ],
     ],
@@ -451,7 +441,7 @@ return [
          * be sent to the void.
          */
         'default' => [
-            'type'      => 'array',        // Required : Type of adapter
+            'type'      => 'void',         // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
             'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
@@ -460,7 +450,7 @@ return [
         
         // Another Cache
         'cacheTwo' => [
-            'type'      => 'apcu',         // Required : Type of adapter
+            'type'      => 'memcached',    // Required : Type of adapter
             'namespace' => 'my-namespace', // Optional : Namespace
             'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
             'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
@@ -471,7 +461,7 @@ return [
         'chained' => [
             'type' => 'chain',                              // Required : Type of adapter
             'options' => [
-                'service'       => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
                 'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
             ]
         ],
@@ -495,7 +485,9 @@ to simply the use the [APCu](#apcu) cache below._
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'apc',
+            'type'    => 'apc',
+            'prefix'  => 'prefix_',   // Optional : Prefix.  Namespaces are not supported on this adapter.
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
             'options' => [
                 'skipOnCli' => false, // Optional : Skip cache with CLI
             ],
@@ -516,7 +508,9 @@ documentation at [www.php-cache.com](http://www.php-cache.com/en/latest/).
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'apcu',
+            'type'    => 'apcu',
+            'prefix'  => 'prefix_',   // Optional : Prefix.  Namespaces are not supported on this adapter.
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
             'options' => [
                 'skipOnCli' => false, // Optional : Skip cache with CLI
             ],
@@ -537,8 +531,10 @@ documentation at [www.php-cache.com](http://www.php-cache.com/en/latest/).
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'array',
-            'options' => [] // No options available,
+            'type'    => 'array',
+            'prefix'  => 'prefix_',   // Optional : Prefix.  Namespaces are not supported on this adapter.
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
+            'options' => []           // No options available,
         ],
     ],
 ];
@@ -561,7 +557,9 @@ get up and running quickly_
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'fileSystem',
+            'type'    => 'fileSystem',
+            'prefix'  => 'prefix_',   // Optional : Prefix.  Namespaces are not supported on this adapter.
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
             'options' => [
                 'flySystemService' => 'my-service', // Required : Pre-configured FlySystem service from the container
                 'folder'           => 'cache',      // Optional : Folder.  Default: 'cache'
@@ -585,7 +583,9 @@ This is a PSR-6 to Illuminate bridge.
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'illuminate',
+            'type'    => 'illuminate',
+            'prefix'  => 'prefix_',   // Optional : Prefix.  Namespaces are not supported on this adapter.
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
             'options' => [
                 'store' => 'my-service', // Required : Pre-configured illuminate store service from the container
             ]
@@ -612,8 +612,11 @@ To read about features like tagging and hierarchy support please read the shared
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'memcached',
-            'options' => [
+            'type'      => 'memcached',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [
                 // A container service is required if no servers are provided : Pre-configured memcached service from the container.
                 'service' => 'my-service', 
                 
@@ -652,7 +655,9 @@ To read about features like tagging and hierarchy support please read the shared
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'mongodb',
+            'type'    => 'mongodb',
+            'prefix'  => 'prefix_',   // Optional : Prefix.  Namespaces are not supported on this adapter.
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
             'options' => [
                 // A container service is required if no DSN is provided : Pre-configured Mongo Collection
                 // service from the container.
@@ -688,8 +693,11 @@ This implementation is using [Predis](https://github.com/nrk/predis). If you wan
 return [
     'caches' => [
         'fromService' => [
-            'type' => 'predis',
-            'options' => [
+            'type'      => 'predis',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [
                 // A container service is required if no servers are provided : Pre-configured Predis Client
                 // service from the container.
                 'service'  => 'my-service', 
@@ -697,8 +705,11 @@ return [
         ],
         
         'singleConnection' => [
-            'type' => 'predis',
-            'options' => [
+            'type'      => 'predis',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [
                 // Required if no service is provided : server(s)
                 'servers'      => [
                     'tcp:/127.0.0.1:6379'
@@ -710,8 +721,11 @@ return [
         ],
         
         'singleConnectionUsingConnectionParams' => [
-            'type' => 'predis',
-            'options' => [
+            'type'      => 'predis',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [
                 // Required if no service is provided : server(s)
                 'servers'      => [
                     [
@@ -727,8 +741,11 @@ return [
         ],
         
         'cluster' => [
-            'type' => 'predis',
-            'options' => [
+            'type'      => 'predis',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [
                 // Required if no service is provided : server(s)
                 'servers'      => [
                     'tcp://10.0.0.1?alias=first-node',
@@ -760,8 +777,11 @@ This implementation is using [PhpRedis](https://github.com/phpredis/phpredis). I
 return [
     'caches' => [
         'fromService' => [
-            'type' => 'redis',
-            'options' => [
+            'type'      => 'redis',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [
                 // A container service is required if no other connection is provided : Pre-configured Php-Redis Client
                 // service from the container.
                 'service'  => 'my-service', 
@@ -769,8 +789,11 @@ return [
         ],
         
         'connection' => [
-            'type' => 'redis',
-            'options' => [
+            'type'      => 'redis',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [
                 // Required if no service is provided : server(s)
                 'server'      => [
                     'host' => '127.0.0.1',  // Required : Hostname
@@ -799,8 +822,11 @@ documentation at [www.php-cache.com](http://www.php-cache.com/en/latest/).
 return [
     'caches' => [
         'myHandlerName' => [
-            'type' => 'void',
-            'options' => [] // No options available,
+            'type'      => 'void',
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => []              // No options available,
         ],
     ],
 ];
@@ -819,7 +845,9 @@ To read about features like tagging and hierarchy support please read the shared
 return [
     'caches' => [
         'fromService' => [
-            'type' => 'doctrine',
+            'type'    => 'doctrine',
+            'prefix'  => 'prefix_',   // Optional : Prefix.  Namespaces are not supported on this adapter.
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
             'options' => [
                 'service'  => 'my-service', // Required : A pre-configured doctrine cache service name
             ]
@@ -840,9 +868,10 @@ at [www.php-cache.com](http://www.php-cache.com/en/latest/).
 return [
     'caches' => [
         'fromService' => [
-            'type' => 'chain',
+            'type'    => 'chain',
+            'logger'  => 'my-logger', // Optional : PSR-1 Logger Service Name
             'options' => [
-                'service'       => ['service-one', 'service-two'], // Required : An array of pre-configured cache service names
+                'services'      => ['service-one', 'service-two'], // Required : An array of pre-configured cache service names
                 'skipOnFailure' => false,                          // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
             ]
         ],
