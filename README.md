@@ -396,7 +396,7 @@ $container['otherCache'] = function($c) {
 
 ## Minimal Configuration
 A minimal configuration would consist of at least one default cache and one named service.
-Please note that if you don't specify a default cache a Array pool will be used when 
+Please note that if you don't specify a default cache a Void pool will be used when 
 you wire up the default cache.
 
 ### Minimal Example (using Zend Expressive for the example)
