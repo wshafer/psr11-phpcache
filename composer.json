@@ -36,12 +36,5 @@
         "psr-4": {
             "WShafer\\PSR11PhpCache\\Test\\": "tests/"
         }
-    },
-
-    "extra": {
-        "zf": {
-            "config-provider": "WShafer\\PSR11PhpCache\\ConfigProvider",
-            "module": "WShafer\\PSR11PhpCache"
-        }
     }
 }
