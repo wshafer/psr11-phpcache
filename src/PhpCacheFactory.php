@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache;
@@ -20,7 +21,7 @@ class PhpCacheFactory
 {
     protected $configKey = 'default';
 
-    public function __invoke(ContainerInterface $container) : CacheItemPoolInterface
+    public function __invoke(ContainerInterface $container): CacheItemPoolInterface
     {
         $config = $this->getConfig($container);
 
@@ -30,7 +31,8 @@ class PhpCacheFactory
 
         $pool = $this->getCachePool($container, $serviceConfig);
 
-        if ($pool instanceof LoggerAwareInterface
+        if (
+            $pool instanceof LoggerAwareInterface
             && $serviceConfig->getLogger()
         ) {
             /** @var LoggerInterface $logger */
@@ -38,8 +40,9 @@ class PhpCacheFactory
             $pool->setLogger($logger);
         }
 
-        if (!empty($serviceConfig->getNamespace())
-            && $pool instanceof HierarchicalPoolInterface
+        if (
+            $pool instanceof HierarchicalPoolInterface
+            && !empty($serviceConfig->getNamespace())
         ) {
             return new NamespacedCachePool($pool, $serviceConfig->getNamespace());
         }
@@ -59,9 +62,10 @@ class PhpCacheFactory
      *
      * @return CacheItemPoolInterface
      */
-    public static function __callStatic($name, $arguments) : CacheItemPoolInterface
+    public static function __callStatic($name, $arguments): CacheItemPoolInterface
     {
-        if (empty($arguments[0])
+        if (
+            empty($arguments[0])
             || !$arguments[0] instanceof ContainerInterface
         ) {
             throw new InvalidContainerException(
@@ -73,27 +77,28 @@ class PhpCacheFactory
         return $factory($arguments[0]);
     }
 
-    public function getConfigKey() : string
+    public function getConfigKey(): string
     {
         return $this->configKey;
     }
 
-    public function setConfigKey(string $key)
+    public function setConfigKey(string $key): void
     {
         $this->configKey = $key;
     }
 
-    protected function getConfig(ContainerInterface $container)
+    protected function getConfig(ContainerInterface $container): MainConfig
     {
         $configArray = $this->getConfigArray($container);
 
         return new MainConfig($configArray);
     }
 
-    protected function getConfigArray(ContainerInterface $container) : array
+    protected function getConfigArray(ContainerInterface $container): array
     {
         // Symfony config is parameters. //
-        if (method_exists($container, 'getParameter')
+        if (
+            method_exists($container, 'getParameter')
             && method_exists($container, 'hasParameter')
             && $container->hasParameter('caches')
         ) {
@@ -115,7 +120,7 @@ class PhpCacheFactory
         );
     }
 
-    protected function getCachePool(ContainerInterface $container, MainConfig $serviceConfig) : CacheItemPoolInterface
+    protected function getCachePool(ContainerInterface $container, MainConfig $serviceConfig): CacheItemPoolInterface
     {
         $type = $serviceConfig->getType();
         $factory = $this->getFactory($type);
@@ -133,8 +138,9 @@ class PhpCacheFactory
             return $type;
         }
 
-        if (class_exists($type)
-            && in_array(FactoryInterface::class, class_implements($type))
+        if (
+            class_exists($type)
+            && in_array(FactoryInterface::class, class_implements($type), true)
         ) {
             return new $type;
         }

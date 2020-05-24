@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
@@ -8,9 +9,9 @@ use Psr\Container\ContainerInterface;
 
 class ApcuAdapterFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container, array $options)
+    public function __invoke(ContainerInterface $container, array $options): ApcuCachePool
     {
-        $skipOnCli = (boolean) ($options['skipOnCli'] ?? false);
+        $skipOnCli = (boolean)($options['skipOnCli'] ?? false);
 
         return new ApcuCachePool($skipOnCli);
     }

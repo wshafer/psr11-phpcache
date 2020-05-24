@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
 
 use Cache\Adapter\Memcached\MemcachedCachePool;
+use Memcached;
 use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 use WShafer\PSR11PhpCache\Exception\MissingExtensionException;
@@ -33,7 +35,7 @@ class MemcachedAdapterFactory implements FactoryInterface
      *
      * @return MemcachedCachePool
      */
-    public function __invoke(ContainerInterface $container, array $options)
+    public function __invoke(ContainerInterface $container, array $options): MemcachedCachePool
     {
         $this->cache = $this->getMemcachedInstance($container, $options);
         return new MemcachedCachePool($this->cache);
@@ -44,14 +46,15 @@ class MemcachedAdapterFactory implements FactoryInterface
      *
      * @return \Memcached
      */
-    public function getCache()
+    public function getCache(): \Memcached
     {
         return $this->cache;
     }
 
     protected function getMemcachedInstance(ContainerInterface $container, array $options)
     {
-        if (empty($options['service'])
+        if (
+            empty($options['service'])
             && empty($options['servers'])
         ) {
             throw new InvalidConfigException(
@@ -71,13 +74,13 @@ class MemcachedAdapterFactory implements FactoryInterface
         return $container->get($name);
     }
 
-    protected function getInstanceFromConfig(array $options)
+    protected function getInstanceFromConfig(array $options): Memcached
     {
-        $persistentId     = $options['persistentId']     ?? null;
-        $servers          = $options['servers']          ?? [];
+        $persistentId = $options['persistentId'] ?? null;
+        $servers = $options['servers'] ?? [];
         $memcachedOptions = $options['memcachedOptions'] ?? [];
 
-        $instance = new \Memcached($persistentId);
+        $instance = new Memcached($persistentId);
 
         foreach ($servers as $server) {
             $this->addServer($instance, $server);
@@ -90,12 +93,12 @@ class MemcachedAdapterFactory implements FactoryInterface
         return $instance;
     }
 
-    protected function addServer(\Memcached $instance, $server)
+    protected function addServer(Memcached $instance, $server): void
     {
         $serverList = $instance->getServerList();
 
-        $host   = $server['host']   ?? null;
-        $port   = $server['port']   ?? 11211;
+        $host = $server['host'] ?? null;
+        $port = $server['port'] ?? 11211;
         $weight = $server['weight'] ?? 0;
 
         if (empty($host)) {
@@ -105,8 +108,9 @@ class MemcachedAdapterFactory implements FactoryInterface
         }
 
         foreach ($serverList as $addedServer) {
-            if ($addedServer['host'] == $host
-                && $addedServer['port'] == $port
+            if (
+                $addedServer['host'] === $host
+                && $addedServer['port'] === $port
             ) {
                 // Server already added skipping
                 return;

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Config;
@@ -26,12 +27,10 @@ class MainConfig extends Config
      */
     public function getType()
     {
-        $type = $this->get('type', 'void');
-
-        return $type;
+        return $this->get('type', 'void');
     }
 
-    public function getOptions() : array
+    public function getOptions(): array
     {
         return $this->get('options', new static([]))->toArray();
     }
@@ -39,7 +38,7 @@ class MainConfig extends Config
     /**
      * @return string|null
      */
-    public function getNamespace()
+    public function getNamespace(): ?string
     {
         return $this->get('namespace');
     }
@@ -47,7 +46,7 @@ class MainConfig extends Config
     /**
      * @return string|null
      */
-    public function getPrefix()
+    public function getPrefix(): ?string
     {
         return $this->get('prefix');
     }

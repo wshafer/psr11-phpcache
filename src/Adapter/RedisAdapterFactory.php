@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
 
 use Cache\Adapter\Redis\RedisCachePool;
 use Psr\Container\ContainerInterface;
+use Redis;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 use WShafer\PSR11PhpCache\Exception\MissingExtensionException;
 
@@ -30,15 +32,16 @@ class RedisAdapterFactory implements FactoryInterface
      *
      * @return RedisCachePool
      */
-    public function __invoke(ContainerInterface $container, array $options)
+    public function __invoke(ContainerInterface $container, array $options): RedisCachePool
     {
         $instance = $this->getInstance($container, $options);
         return new RedisCachePool($instance);
     }
 
-    public function getInstance(ContainerInterface $container, array $options)
+    public function getInstance(ContainerInterface $container, array $options): Redis
     {
-        if (empty($options['service'])
+        if (
+            empty($options['service'])
             && empty($options['server'])
         ) {
             throw new InvalidConfigException(
@@ -55,25 +58,25 @@ class RedisAdapterFactory implements FactoryInterface
 
     /**
      * @param ContainerInterface $container
-     * @param $name
+     * @param                    $name
      *
      * @return \Redis
      */
-    public function getInstanceFromContainer(ContainerInterface $container, $name)
+    public function getInstanceFromContainer(ContainerInterface $container, $name): Redis
     {
         return $container->get($name);
     }
 
-    public function getInstanceFromConfig(array $options)
+    public function getInstanceFromConfig(array $options): Redis
     {
-        $server       = $options['server']      ?? [];
-        $host         = $server['host']         ?? null;
-        $port         = $server['port']         ?? 6379;
-        $timeout      = $server['timeout']      ?? 0.0;
-        $persistent   = $server['persistent']   ?? true;
+        $server = $options['server'] ?? [];
+        $host = $server['host'] ?? null;
+        $port = $server['port'] ?? 6379;
+        $timeout = $server['timeout'] ?? 0.0;
+        $persistent = $server['persistent'] ?? true;
         $persistentId = $server['persistentId'] ?? 'phpcache';
 
-        $connection = new \Redis();
+        $connection = new Redis();
 
         if (!$persistent) {
             $connection->connect($host, $port, $timeout);
