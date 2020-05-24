@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use Cache\Adapter\Apcu\ApcuCachePool;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +19,7 @@ class ApcuAdapterFactoryTest extends TestCase
 
     protected $mockContainer;
 
-    public function setup()
+    protected function setup(): void
     {
         $this->mockContainer = $this->createMock(ContainerInterface::class);
         $this->factory = new ApcuAdapterFactory();
@@ -26,7 +27,7 @@ class ApcuAdapterFactoryTest extends TestCase
         $this->assertInstanceOf(ApcuAdapterFactory::class, $this->factory);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $instance = $this->factory->__invoke($this->mockContainer, []);
         $this->assertInstanceOf(ApcuCachePool::class, $instance);

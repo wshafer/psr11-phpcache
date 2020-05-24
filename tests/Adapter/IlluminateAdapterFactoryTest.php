@@ -1,27 +1,31 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use Cache\Adapter\Illuminate\IlluminateCachePool;
 use Illuminate\Contracts\Cache\Store;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use stdClass;
 use WShafer\PSR11PhpCache\Adapter\FactoryInterface;
 use WShafer\PSR11PhpCache\Adapter\IlluminateAdapterFactory;
+use PHPUnit\Framework\MockObject\MockObject;
+use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
 class IlluminateAdapterFactoryTest extends TestCase
 {
     /** @var FactoryInterface */
     protected $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface */
+    /** @var MockObject|ContainerInterface */
     protected $mockContainer;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|Store */
+    /** @var MockObject|Store */
     protected $mockStore;
 
-    public function setup()
+    protected function setup(): void
     {
         $this->mockContainer = $this->createMock(ContainerInterface::class);
         $this->mockStore = $this->createMock(Store::class);
@@ -31,32 +35,37 @@ class IlluminateAdapterFactoryTest extends TestCase
         $this->assertInstanceOf(IlluminateAdapterFactory::class, $this->factory);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $this->mockContainer->expects($this->once())
             ->method('get')
             ->with('my-service')
             ->willReturn($this->mockStore);
 
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'store' => 'my-service'
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'store' => 'my-service'
+            ]
+        );
 
         $this->assertInstanceOf(IlluminateCachePool::class, $instance);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeNoFileSystem()
+    public function testInvokeNoFileSystem(): void
     {
+        $this->expectException(InvalidConfigException::class);
+
         $this->mockContainer->expects($this->once())
             ->method('get')
             ->with('my-service')
-            ->willReturn(new \stdClass());
+            ->willReturn(new stdClass());
 
-        $this->factory->__invoke($this->mockContainer, [
-            'store' => 'my-service'
-        ]);
+        $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'store' => 'my-service'
+            ]
+        );
     }
 }

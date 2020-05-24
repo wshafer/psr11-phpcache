@@ -1,22 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use Cache\Adapter\Memcached\MemcachedCachePool;
+use Memcached;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Adapter\MemcachedAdapterFactory;
+use PHPUnit\Framework\MockObject\MockObject;
+use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
 class MemcachedAdapterFactoryTest extends TestCase
 {
     /** @var MemcachedAdapterFactory */
     protected $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface */
+    /** @var MockObject|ContainerInterface */
     protected $mockContainer;
 
-    public function setup()
+    protected function setup(): void
     {
         if (!extension_loaded('memcached')) {
             $this->markTestSkipped('memcached not installed.  Skipping test');
@@ -29,32 +33,38 @@ class MemcachedAdapterFactoryTest extends TestCase
         $this->assertInstanceOf(MemcachedAdapterFactory::class, $this->factory);
     }
 
-    public function testInvokeWithService()
+    public function testInvokeWithService(): void
     {
-        $cacheService = new \Memcached();
+        $cacheService = new Memcached();
 
         $this->mockContainer->expects($this->once())
             ->method('get')
             ->with('my-service')
             ->willReturn($cacheService);
 
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'service' => 'my-service'
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'service' => 'my-service'
+            ]
+        );
 
         $this->assertInstanceOf(MemcachedCachePool::class, $instance);
     }
 
-    public function testInvokeWithNoPersistence()
+    public function testInvokeWithNoPersistence(): void
     {
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'servers' => [
-                ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20]
-            ],
-            'memcachedOptions' => [
-                \Memcached::OPT_RECV_TIMEOUT => 1000000
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'servers' => [
+                    ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20]
+                ],
+                'memcachedOptions' => [
+                    Memcached::OPT_RECV_TIMEOUT => 1000000
+                ]
             ]
-        ]);
+        );
 
         $this->assertInstanceOf(MemcachedCachePool::class, $instance);
 
@@ -71,17 +81,20 @@ class MemcachedAdapterFactoryTest extends TestCase
         $servers = $cache->getServerList();
 
         $this->assertEquals($expected, $servers);
-        $this->assertEquals(1000000, $cache->getOption(\Memcached::OPT_RECV_TIMEOUT));
+        $this->assertEquals(1000000, $cache->getOption(Memcached::OPT_RECV_TIMEOUT));
     }
 
-    public function testInvokeOnlyAddsServerOnce()
+    public function testInvokeOnlyAddsServerOnce(): void
     {
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'servers' => [
-                ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
-                ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'servers' => [
+                    ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
+                    ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
+                ]
             ]
-        ]);
+        );
 
         $this->assertInstanceOf(MemcachedCachePool::class, $instance);
 
@@ -100,14 +113,17 @@ class MemcachedAdapterFactoryTest extends TestCase
         $this->assertEquals($expected, $servers);
     }
 
-    public function testInvokeWithPersistence()
+    public function testInvokeWithPersistence(): void
     {
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'persistentId' => 'phpunit',
-            'servers' => [
-                ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'persistentId' => 'phpunit',
+                'servers' => [
+                    ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
+                ]
             ]
-        ]);
+        );
 
         $this->assertInstanceOf(MemcachedCachePool::class, $instance);
 
@@ -127,12 +143,15 @@ class MemcachedAdapterFactoryTest extends TestCase
 
 
         // Make a second call
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'persistentId' => 'phpunit',
-            'servers' => [
-                ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'persistentId' => 'phpunit',
+                'servers' => [
+                    ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 20],
+                ]
             ]
-        ]);
+        );
 
         $this->assertInstanceOf(MemcachedCachePool::class, $instance);
 
@@ -148,19 +167,15 @@ class MemcachedAdapterFactoryTest extends TestCase
         $this->assertEmpty($cache->getServerList());
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeMissingServersAndService()
+    public function testInvokeMissingServersAndService(): void
     {
+        $this->expectException(InvalidConfigException::class);
         $this->factory->__invoke($this->mockContainer, []);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeMissingServerHost()
+    public function testInvokeMissingServerHost(): void
     {
+        $this->expectException(InvalidConfigException::class);
         $this->factory->__invoke($this->mockContainer, ['servers' => ['port' => 11211]]);
     }
 }
