@@ -11,7 +11,7 @@ class ApcAdapterFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, array $options): ApcCachePool
     {
-        $skipOnCli = (boolean)($options['skipOnCli'] ?? false);
+        $skipOnCli = (bool)($options['skipOnCli'] ?? false);
 
         return new ApcCachePool($skipOnCli);
     }

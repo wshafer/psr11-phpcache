@@ -144,7 +144,7 @@ class PhpCacheFactory
             class_exists($type)
             && in_array(FactoryInterface::class, class_implements($type), true)
         ) {
-            return new $type;
+            return new $type();
         }
 
         $mapper = new AdapterMapper();

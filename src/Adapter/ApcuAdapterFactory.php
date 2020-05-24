@@ -11,7 +11,7 @@ class ApcuAdapterFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, array $options): ApcuCachePool
     {
-        $skipOnCli = (boolean)($options['skipOnCli'] ?? false);
+        $skipOnCli = (bool)($options['skipOnCli'] ?? false);
 
         return new ApcuCachePool($skipOnCli);
     }
