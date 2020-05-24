@@ -23,17 +23,9 @@
         "phpmd/phpmd" : "^2.8",
         "satooshi/php-coveralls": "^1.0",
         "illuminate/cache": "^5.5",
+        "mongodb/mongodb": "^1.1",
         "predis/predis": "^1.1",
         "symfony/dependency-injection": "^3.3"
-    },
-    "suggest": {
-        "ext-apc": "APC extension is required to use the APC Adapter",
-        "ext-apcu": "APCu extension is required to use the APCu Adapter",
-        "ext-memcache": "Memcache extension is required to use the Memcache Adapter",
-        "ext-memcached": "Memcached extension is required to use the Memcached Adapter",
-        "ext-redis": "Redis extension is required to use the Redis adapter",
-        "ext-mongodb": "Mongodb extension required to use the Mongodb adapter",
-        "mongodb/mongodb": "Mongodb lib required to use the Mongodb adapter"
     },
     "autoload": {
         "psr-4": {
