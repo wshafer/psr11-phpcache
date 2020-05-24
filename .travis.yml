@@ -10,7 +10,7 @@ cache:
 services:
   - mongodb
   - memcached
-  - redis
+  - redis-server
 
 before_script:
   - composer self-update
