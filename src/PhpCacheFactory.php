@@ -129,6 +129,8 @@ class PhpCacheFactory
     }
 
     /**
+     * @SuppressWarnings(PHPMD.MissingImport)
+     *
      * @param $type
      * @return callable|FactoryInterface
      */

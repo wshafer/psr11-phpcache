@@ -8,6 +8,7 @@ class AdapterMapper
 {
     /**
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
      * @param string $type
      * @return \WShafer\PSR11PhpCache\Adapter\FactoryInterface|null
      */
