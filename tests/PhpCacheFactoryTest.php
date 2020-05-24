@@ -19,6 +19,9 @@ use WShafer\PSR11PhpCache\Exception\InvalidContainerException;
 use WShafer\PSR11PhpCache\Exception\MissingCacheConfigException;
 use WShafer\PSR11PhpCache\PhpCacheFactory;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\PhpCacheFactory
+ */
 class PhpCacheFactoryTest extends TestCase
 {
     /** @var PhpCacheFactory */
@@ -64,9 +67,9 @@ class PhpCacheFactoryTest extends TestCase
             ->method('has')
             ->willReturnMap($map);
 
-        $this->mockContainer->expects($this->once())
+        $this->mockContainer->expects($this->any())
             ->method('get')
-            ->with(['config'])
+            ->with('config')
             ->willReturn($this->configArray);
 
         $pool = $this->factory->__invoke($this->mockContainer);

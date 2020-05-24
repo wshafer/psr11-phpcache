@@ -12,6 +12,9 @@ use WShafer\PSR11PhpCache\Adapter\DoctrineCacheAdapterFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\DoctrineCacheAdapterFactory
+ */
 class DoctrineCacheAdapterFactoryTest extends TestCase
 {
     /** @var DoctrineCacheAdapterFactory */

@@ -12,6 +12,9 @@ use WShafer\PSR11PhpCache\Adapter\MemcachedAdapterFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\MemcachedAdapterFactory
+ */
 class MemcachedAdapterFactoryTest extends TestCase
 {
     /** @var MemcachedAdapterFactory */

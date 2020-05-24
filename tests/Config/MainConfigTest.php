@@ -7,6 +7,9 @@ namespace WShafer\PSR11PhpCacheTests\Config;
 use PHPUnit\Framework\TestCase;
 use WShafer\PSR11PhpCache\Config\MainConfig;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Config\MainConfig
+ */
 class MainConfigTest extends TestCase
 {
     /** @var MainConfig */

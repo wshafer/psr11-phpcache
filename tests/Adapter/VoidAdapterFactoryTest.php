@@ -10,6 +10,9 @@ use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Adapter\FactoryInterface;
 use WShafer\PSR11PhpCache\Adapter\VoidAdapterFactory;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\VoidAdapterFactory
+ */
 class VoidAdapterFactoryTest extends TestCase
 {
     /**

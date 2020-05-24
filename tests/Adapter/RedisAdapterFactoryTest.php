@@ -12,6 +12,9 @@ use WShafer\PSR11PhpCache\Adapter\RedisAdapterFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\RedisAdapterFactory
+ */
 class RedisAdapterFactoryTest extends TestCase
 {
     /** @var RedisAdapterFactory */

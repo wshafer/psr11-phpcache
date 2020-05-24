@@ -19,6 +19,9 @@ use WShafer\PSR11PhpCache\Adapter\PredisAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\RedisAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\VoidAdapterFactory;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\AdapterMapper
+ */
 class AdapterMapperTest extends TestCase
 {
     /**

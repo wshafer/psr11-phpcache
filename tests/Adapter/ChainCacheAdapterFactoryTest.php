@@ -13,6 +13,9 @@ use WShafer\PSR11PhpCache\Adapter\ChainCacheAdapterFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\ChainCacheAdapterFactory
+ */
 class ChainCacheAdapterFactoryTest extends TestCase
 {
     /** @var ChainCacheAdapterFactory */

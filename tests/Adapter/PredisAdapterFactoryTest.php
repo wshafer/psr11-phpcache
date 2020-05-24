@@ -12,6 +12,9 @@ use WShafer\PSR11PhpCache\Adapter\PredisAdapterFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\PredisAdapterFactory
+ */
 class PredisAdapterFactoryTest extends TestCase
 {
     /** @var PredisAdapterFactory */

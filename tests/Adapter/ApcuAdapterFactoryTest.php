@@ -10,6 +10,9 @@ use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Adapter\ApcuAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\FactoryInterface;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\ApcuAdapterFactory
+ */
 class ApcuAdapterFactoryTest extends TestCase
 {
     /**

@@ -14,6 +14,9 @@ use WShafer\PSR11PhpCache\Adapter\FileSystemAdapterFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\FileSystemAdapterFactory
+ */
 class FileSystemAdapterFactoryTest extends TestCase
 {
     /** @var FactoryInterface */

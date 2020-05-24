@@ -10,6 +10,9 @@ use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Adapter\ArrayAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\FactoryInterface;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\ArrayAdapterFactory
+ */
 class ArrayAdapterFactoryTest extends TestCase
 {
     /**

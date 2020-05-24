@@ -14,6 +14,9 @@ use WShafer\PSR11PhpCache\Adapter\IlluminateAdapterFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\IlluminateAdapterFactory
+ */
 class IlluminateAdapterFactoryTest extends TestCase
 {
     /** @var FactoryInterface */
