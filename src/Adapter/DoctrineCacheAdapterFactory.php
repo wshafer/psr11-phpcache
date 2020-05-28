@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
@@ -31,7 +32,7 @@ class DoctrineCacheAdapterFactory implements FactoryInterface
      *
      * @return DoctrineCachePool
      */
-    public function __invoke(ContainerInterface $container, array $options)
+    public function __invoke(ContainerInterface $container, array $options): DoctrineCachePool
     {
         if (empty($options['service'])) {
             throw new InvalidConfigException(

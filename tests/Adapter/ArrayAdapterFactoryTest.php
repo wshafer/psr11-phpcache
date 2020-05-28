@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use PHPUnit\Framework\TestCase;
@@ -9,6 +10,9 @@ use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Adapter\ArrayAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\FactoryInterface;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\ArrayAdapterFactory
+ */
 class ArrayAdapterFactoryTest extends TestCase
 {
     /**
@@ -18,7 +22,7 @@ class ArrayAdapterFactoryTest extends TestCase
 
     protected $mockContainer;
 
-    public function setup()
+    protected function setup(): void
     {
         $this->mockContainer = $this->createMock(ContainerInterface::class);
         $this->factory = new ArrayAdapterFactory();
@@ -26,7 +30,7 @@ class ArrayAdapterFactoryTest extends TestCase
         $this->assertInstanceOf(ArrayAdapterFactory::class, $this->factory);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $instance = $this->factory->__invoke($this->mockContainer, []);
         $this->assertInstanceOf(ArrayCachePool::class, $instance);

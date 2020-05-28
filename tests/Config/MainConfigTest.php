@@ -1,17 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test;
+namespace WShafer\PSR11PhpCacheTests\Config;
 
 use PHPUnit\Framework\TestCase;
 use WShafer\PSR11PhpCache\Config\MainConfig;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Config\MainConfig
+ */
 class MainConfigTest extends TestCase
 {
     /** @var MainConfig */
     protected $config;
 
-    public function setup()
+    protected function setup(): void
     {
         $configArray = $this->getConfigArray();
 
@@ -20,7 +24,7 @@ class MainConfigTest extends TestCase
         $this->assertInstanceOf(MainConfig::class, $this->config);
     }
 
-    public function getConfigArray()
+    public function getConfigArray(): array
     {
         return [
             'cacheOne' => [
@@ -54,11 +58,11 @@ class MainConfigTest extends TestCase
         ];
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
     }
 
-    public function testGetCacheConfig()
+    public function testGetCacheConfig(): void
     {
         $configArray = $this->getConfigArray();
         $expected = $configArray['cacheOne'];
@@ -68,7 +72,7 @@ class MainConfigTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $configArray = $this->getConfigArray();
         $expected = $configArray['cacheOne']['type'];
@@ -78,7 +82,7 @@ class MainConfigTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         $configArray = $this->getConfigArray();
         $expected = $configArray['cacheOne']['options'];
@@ -88,7 +92,7 @@ class MainConfigTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetNamespace()
+    public function testGetNamespace(): void
     {
         $configArray = $this->getConfigArray();
         $expected = $configArray['cacheOne']['namespace'];
@@ -98,7 +102,7 @@ class MainConfigTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetPrefix()
+    public function testGetPrefix(): void
     {
         $configArray = $this->getConfigArray();
         $expected = $configArray['cacheOne']['prefix'];
@@ -108,7 +112,7 @@ class MainConfigTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetLogger()
+    public function testGetLogger(): void
     {
         $configArray = $this->getConfigArray();
         $expected = $configArray['cacheOne']['logger'];

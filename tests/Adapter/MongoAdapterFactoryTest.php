@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use Cache\Adapter\MongoDB\MongoDBCachePool;
 use MongoDB\Client;
@@ -10,16 +11,21 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Adapter\MemcachedAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\MongoAdapterFactory;
+use PHPUnit\Framework\MockObject\MockObject;
+use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\MongoAdapterFactory
+ */
 class MongoAdapterFactoryTest extends TestCase
 {
     /** @var MemcachedAdapterFactory */
     protected $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface */
+    /** @var MockObject|ContainerInterface */
     protected $mockContainer;
 
-    public function setup()
+    protected function setup(): void
     {
         if (!extension_loaded('mongodb')) {
             $this->markTestSkipped('mongodb extension not installed.  Skipping test');
@@ -36,7 +42,7 @@ class MongoAdapterFactoryTest extends TestCase
         $this->assertInstanceOf(MongoAdapterFactory::class, $this->factory);
     }
 
-    public function testInvokeWithService()
+    public function testInvokeWithService(): void
     {
         $collection = (new Client())->unitTest->fakeCollection;
 
@@ -45,51 +51,57 @@ class MongoAdapterFactoryTest extends TestCase
             ->with('my-service')
             ->willReturn($collection);
 
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'service' => 'my-service'
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'service' => 'my-service'
+            ]
+        );
 
         $this->assertInstanceOf(MongoDBCachePool::class, $instance);
     }
 
-    public function testInvokeUsingConfig()
+    public function testInvokeUsingConfig(): void
     {
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'dsn'        => 'mongodb://127.0.0.1',
-            'database'   => 'fromconfig',
-            'collection' => 'testOne'
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'dsn' => 'mongodb://127.0.0.1',
+                'database' => 'fromconfig',
+                'collection' => 'testOne'
+            ]
+        );
 
         $this->assertInstanceOf(MongoDBCachePool::class, $instance);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeMissingServiceAndDsn()
+    public function testInvokeMissingServiceAndDsn(): void
     {
+        $this->expectException(InvalidConfigException::class);
         $this->factory->__invoke($this->mockContainer, []);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeMissingDbName()
+    public function testInvokeMissingDbName(): void
     {
-        $this->factory->__invoke($this->mockContainer, [
-            'dsn'        => 'mongodb://127.0.0.1',
-            'collection' => 'testOne'
-        ]);
+        $this->expectException(InvalidConfigException::class);
+        $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'dsn' => 'mongodb://127.0.0.1',
+                'collection' => 'testOne'
+            ]
+        );
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeMissingCollectionName()
+    public function testInvokeMissingCollectionName(): void
     {
-        $this->factory->__invoke($this->mockContainer, [
-            'dsn'        => 'mongodb://127.0.0.1',
-            'database'   => 'fromconfig',
-        ]);
+        $this->expectException(InvalidConfigException::class);
+        $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'dsn' => 'mongodb://127.0.0.1',
+                'database' => 'fromconfig',
+            ]
+        );
     }
 }

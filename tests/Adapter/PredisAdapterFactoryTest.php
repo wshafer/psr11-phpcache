@@ -1,23 +1,29 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use Cache\Adapter\Predis\PredisCachePool;
 use PHPUnit\Framework\TestCase;
 use Predis\Client;
 use Psr\Container\ContainerInterface;
 use WShafer\PSR11PhpCache\Adapter\PredisAdapterFactory;
+use PHPUnit\Framework\MockObject\MockObject;
+use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\PredisAdapterFactory
+ */
 class PredisAdapterFactoryTest extends TestCase
 {
     /** @var PredisAdapterFactory */
     protected $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface */
+    /** @var MockObject|ContainerInterface */
     protected $mockContainer;
 
-    public function setup()
+    protected function setup(): void
     {
         if (!class_exists(Client::class)) {
             $this->markTestSkipped('Predis not installed.  Skipping test');
@@ -30,7 +36,7 @@ class PredisAdapterFactoryTest extends TestCase
         $this->assertInstanceOf(PredisAdapterFactory::class, $this->factory);
     }
 
-    public function testInvokeWithService()
+    public function testInvokeWithService(): void
     {
         $cacheService = new Client();
 
@@ -39,41 +45,48 @@ class PredisAdapterFactoryTest extends TestCase
             ->with('my-service')
             ->willReturn($cacheService);
 
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'service' => 'my-service'
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'service' => 'my-service'
+            ]
+        );
 
         $this->assertInstanceOf(PredisCachePool::class, $instance);
     }
 
-    public function testInvokeWithConnectionSettings()
+    public function testInvokeWithConnectionSettings(): void
     {
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'servers'      => [
-                'tcp:/127.0.0.1:6379'
-            ],
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'servers' => [
+                    'tcp:/127.0.0.1:6379'
+                ],
+            ]
+        );
 
         $this->assertInstanceOf(PredisCachePool::class, $instance);
     }
 
-    public function testInvokeWithMultipleConnectionSettings()
+    public function testInvokeWithMultipleConnectionSettings(): void
     {
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'servers'      => [
-                'tcp:/127.0.0.1:6379',
-                'tcp:/127.0.0.1:6379',
-            ],
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'servers' => [
+                    'tcp:/127.0.0.1:6379',
+                    'tcp:/127.0.0.1:6379',
+                ],
+            ]
+        );
 
         $this->assertInstanceOf(PredisCachePool::class, $instance);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeMissingServerAndService()
+    public function testInvokeMissingServerAndService(): void
     {
+        $this->expectException(InvalidConfigException::class);
         $this->factory->__invoke($this->mockContainer, []);
     }
 }

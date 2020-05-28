@@ -12,9 +12,9 @@ fi
 # Install dependencies
 add-apt-repository ppa:ondrej/php
 apt-get update
-apt-get install -y git curl php7.1-bcmath php7.1-bz2 php7.1-cli php7.1-curl php7.1-intl php7.1-json \
-php7.1-mbstring php7.1-opcache php7.1-soap php7.1-sqlite3 php7.1-xml php7.1-xsl php7.1-zip libapache2-mod-php7.1 \
-php-pear php7.1-dev build-essential memcached libmemcached-dev zlib1g-dev pkg-config mongodb tcl;
+apt-get install -y git curl php7.3-bcmath php7.3-bz2 php7.3-cli php7.3-curl php7.3-intl php7.3-json \
+php7.3-mbstring php7.3-opcache php7.3-soap php7.3-sqlite3 php7.3-xml php7.3-xsl php7.3-zip libapache2-mod-php7.3 \
+php-pear php7.3-dev build-essential memcached libmemcached-dev zlib1g-dev pkg-config mongodb tcl;
 
 # Install Redis
 curl -O http://download.redis.io/redis-stable.tar.gz
@@ -55,9 +55,9 @@ pecl install memcached
 pecl install mongodb
 pecl install redis
 
-echo extension=memcached.so > /etc/php/7.1/mods-available/memcached.ini
-echo extension=mongodb.so > /etc/php/7.1/mods-available/mongodb.ini
-echo extension=redis.so > /etc/php/7.1/mods-available/redis.ini
+echo extension=memcached.so > /etc/php/7.3/mods-available/memcached.ini
+echo extension=mongodb.so > /etc/php/7.3/mods-available/mongodb.ini
+echo extension=redis.so > /etc/php/7.3/mods-available/redis.ini
 
 phpenmod memcached;
 phpenmod mongodb;

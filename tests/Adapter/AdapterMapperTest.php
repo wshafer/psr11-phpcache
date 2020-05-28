@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use WShafer\PSR11PhpCache\Adapter\AdapterMapper;
@@ -18,6 +19,9 @@ use WShafer\PSR11PhpCache\Adapter\PredisAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\RedisAdapterFactory;
 use WShafer\PSR11PhpCache\Adapter\VoidAdapterFactory;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\AdapterMapper
+ */
 class AdapterMapperTest extends TestCase
 {
     /**
@@ -25,91 +29,91 @@ class AdapterMapperTest extends TestCase
      */
     protected $mapper;
 
-    public function setup()
+    protected function setup(): void
     {
         $this->mapper = new AdapterMapper();
         $this->assertInstanceOf(AdapterMapper::class, $this->mapper);
     }
 
-    public function testApc()
+    public function testApc(): void
     {
         $result = $this->mapper->map('apc');
         $this->assertInstanceOf(ApcAdapterFactory::class, $result);
     }
 
-    public function testApcu()
+    public function testApcu(): void
     {
         $result = $this->mapper->map('apcu');
         $this->assertInstanceOf(ApcuAdapterFactory::class, $result);
     }
 
-    public function testArray()
+    public function testArray(): void
     {
         $result = $this->mapper->map('array');
         $this->assertInstanceOf(ArrayAdapterFactory::class, $result);
     }
 
-    public function testChain()
+    public function testChain(): void
     {
         $result = $this->mapper->map('chain');
         $this->assertInstanceOf(ChainCacheAdapterFactory::class, $result);
     }
 
-    public function testDoctrine()
+    public function testDoctrine(): void
     {
         $result = $this->mapper->map('doctrine');
         $this->assertInstanceOf(DoctrineCacheAdapterFactory::class, $result);
     }
 
-    public function testFileSystem()
+    public function testFileSystem(): void
     {
         $result = $this->mapper->map('filesystem');
         $this->assertInstanceOf(FileSystemAdapterFactory::class, $result);
     }
 
-    public function testIlluminate()
+    public function testIlluminate(): void
     {
         $result = $this->mapper->map('illuminate');
         $this->assertInstanceOf(IlluminateAdapterFactory::class, $result);
     }
 
-    public function testMemcached()
+    public function testMemcached(): void
     {
         $result = $this->mapper->map('memcached');
         $this->assertInstanceOf(MemcachedAdapterFactory::class, $result);
     }
 
-    public function testMongo()
+    public function testMongo(): void
     {
         $result = $this->mapper->map('mongo');
         $this->assertInstanceOf(MongoAdapterFactory::class, $result);
     }
 
-    public function testMongoDb()
+    public function testMongoDb(): void
     {
         $result = $this->mapper->map('mongodb');
         $this->assertInstanceOf(MongoAdapterFactory::class, $result);
     }
 
-    public function testPredis()
+    public function testPredis(): void
     {
         $result = $this->mapper->map('predis');
         $this->assertInstanceOf(PredisAdapterFactory::class, $result);
     }
 
-    public function testRedis()
+    public function testRedis(): void
     {
         $result = $this->mapper->map('redis');
         $this->assertInstanceOf(RedisAdapterFactory::class, $result);
     }
 
-    public function testVoid()
+    public function testVoid(): void
     {
         $result = $this->mapper->map('void');
         $this->assertInstanceOf(VoidAdapterFactory::class, $result);
     }
 
-    public function testNull()
+    public function testNull(): void
     {
         $result = $this->mapper->map('nothere');
         $this->assertNull($result);

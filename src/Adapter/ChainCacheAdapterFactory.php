@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
@@ -12,12 +13,14 @@ class ChainCacheAdapterFactory implements FactoryInterface
     /**
      * @param ContainerInterface $container
      * @param array              $options
-     *
      * @return CachePoolChain
      */
-    public function __invoke(ContainerInterface $container, array $options)
+    public function __invoke(ContainerInterface $container, array $options): CachePoolChain
     {
-        if (empty($options['services']) || !is_array($options['services'])) {
+        if (
+            empty($options['services'])
+            || !is_array($options['services'])
+        ) {
             throw new InvalidConfigException(
                 'You must provide an array of preconfigured cache services to use for the chain'
             );

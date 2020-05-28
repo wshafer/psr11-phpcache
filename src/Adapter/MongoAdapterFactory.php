@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
@@ -39,7 +40,7 @@ class MongoAdapterFactory implements FactoryInterface
      *
      * @return MongoDBCachePool
      */
-    public function __invoke(ContainerInterface $container, array $options)
+    public function __invoke(ContainerInterface $container, array $options): MongoDBCachePool
     {
         $instance = $this->getMongoInstance($container, $options);
         return new MongoDBCachePool($instance);
@@ -47,12 +48,13 @@ class MongoAdapterFactory implements FactoryInterface
 
     /**
      * @param ContainerInterface $container
-     * @param array $options
+     * @param array              $options
      * @return \MongoDB\Collection
      */
-    protected function getMongoInstance(ContainerInterface $container, array $options)
+    protected function getMongoInstance(ContainerInterface $container, array $options): Collection
     {
-        if (empty($options['service'])
+        if (
+            empty($options['service'])
             && empty($options['dsn'])
         ) {
             throw new InvalidConfigException(
@@ -79,10 +81,10 @@ class MongoAdapterFactory implements FactoryInterface
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function getInstanceFromConfig(array $options)
+    protected function getInstanceFromConfig(array $options): Collection
     {
-        $dsn            = $options['dsn']        ?? null;
-        $databaseName   = $options['database']   ?? null;
+        $dsn = $options['dsn'] ?? null;
+        $databaseName = $options['database'] ?? null;
         $collectionName = $options['collection'] ?? null;
 
         if (empty($databaseName)) {

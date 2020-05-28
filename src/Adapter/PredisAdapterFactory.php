@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
@@ -31,7 +32,7 @@ class PredisAdapterFactory implements FactoryInterface
      *
      * @return PredisCachePool
      */
-    public function __invoke(ContainerInterface $container, array $options)
+    public function __invoke(ContainerInterface $container, array $options): PredisCachePool
     {
         $instance = $this->getInstance($container, $options);
         return new PredisCachePool($instance);
@@ -39,7 +40,8 @@ class PredisAdapterFactory implements FactoryInterface
 
     protected function getInstance(ContainerInterface $container, array $options)
     {
-        if (empty($options['service'])
+        if (
+            empty($options['service'])
             && empty($options['servers'])
         ) {
             throw new InvalidConfigException(
@@ -56,18 +58,18 @@ class PredisAdapterFactory implements FactoryInterface
 
     /**
      * @param ContainerInterface $container
-     * @param $name
+     * @param                    $name
      *
      * @return Client
      */
-    protected function getInstanceFromContainer(ContainerInterface $container, $name)
+    protected function getInstanceFromContainer(ContainerInterface $container, $name): Client
     {
         return $container->get($name);
     }
 
-    protected function getInstanceFromConfig(array $options)
+    protected function getInstanceFromConfig(array $options): Client
     {
-        $servers           = $options['servers']           ?? [];
+        $servers = $options['servers'] ?? [];
         $connectionOptions = $options['connectionOptions'] ?? [];
 
         if (count($servers) === 1) {

@@ -1,14 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace WShafer\PSR11PhpCache\Adapter;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class AdapterMapper
 {
     /**
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @param string $type
+     * @return \WShafer\PSR11PhpCache\Adapter\FactoryInterface|null
      */
-    public function map($type)
+    public function map(string $type): ?FactoryInterface
     {
         $type = strtolower($type);
 

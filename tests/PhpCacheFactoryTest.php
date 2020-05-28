@@ -1,26 +1,33 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test;
+namespace WShafer\PSR11PhpCacheTests;
 
 use Cache\Adapter\Apc\ApcCachePool;
 use Cache\Adapter\PHPArray\ArrayCachePool;
-use Cache\Adapter\Void\VoidCachePool;
 use Cache\Namespaced\NamespacedCachePool;
 use Cache\Prefixed\PrefixedCachePool;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use stdClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use WShafer\PSR11PhpCache\Adapter\ArrayAdapterFactory;
+use WShafer\PSR11PhpCache\Exception\InvalidContainerException;
+use WShafer\PSR11PhpCache\Exception\MissingCacheConfigException;
 use WShafer\PSR11PhpCache\PhpCacheFactory;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\PhpCacheFactory
+ */
 class PhpCacheFactoryTest extends TestCase
 {
     /** @var PhpCacheFactory */
     protected $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface */
+    /** @var MockObject|ContainerInterface */
     protected $mockContainer;
 
     protected $configArray = [
@@ -35,7 +42,7 @@ class PhpCacheFactoryTest extends TestCase
         ]
     ];
 
-    public function setup()
+    protected function setup(): void
     {
         $this->mockContainer = $this->createMock(ContainerInterface::class);
 
@@ -44,11 +51,11 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(PhpCacheFactory::class, $this->factory);
     }
 
-    public function testConstruct()
+    public function testConstruct(): void
     {
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $map = [
             ['settings', false],
@@ -58,9 +65,9 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
-        $this->mockContainer->expects($this->once())
+        $this->mockContainer->expects($this->any())
             ->method('get')
             ->with('config')
             ->willReturn($this->configArray);
@@ -70,7 +77,7 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(ArrayCachePool::class, $pool);
     }
 
-    public function testInvokeSlim()
+    public function testInvokeSlim(): void
     {
         $map = [
             ['settings', true],
@@ -79,7 +86,7 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->mockContainer->expects($this->once())
             ->method('get')
@@ -91,7 +98,7 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(ArrayCachePool::class, $pool);
     }
 
-    public function testInvokeSymfony()
+    public function testInvokeSymfony(): void
     {
         $this->mockContainer = $this->createMock(ContainerBuilder::class);
 
@@ -110,11 +117,9 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(ArrayCachePool::class, $pool);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\MissingCacheConfigException
-     */
-    public function testInvokeNoConfig()
+    public function testInvokeNoConfig(): void
     {
+        $this->expectException(MissingCacheConfigException::class);
         $map = [
             ['settings', false],
             ['config', false],
@@ -123,12 +128,12 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->factory->__invoke($this->mockContainer);
     }
 
-    public function testInvokeWithoutMapper()
+    public function testInvokeWithoutMapper(): void
     {
         $this->configArray['caches']['default']['type'] = ArrayAdapterFactory::class;
 
@@ -140,7 +145,7 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->mockContainer->expects($this->once())
             ->method('get')
@@ -152,7 +157,7 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(ArrayCachePool::class, $pool);
     }
 
-    public function testInvokeWithCallableFactory()
+    public function testInvokeWithCallableFactory(): void
     {
         $this->configArray['caches']['default']['type'] = function (ContainerInterface $container, $options) {
             $factory = new ArrayAdapterFactory();
@@ -167,7 +172,7 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->mockContainer->expects($this->once())
             ->method('get')
@@ -179,7 +184,7 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(ArrayCachePool::class, $pool);
     }
 
-    public function testInvokeAddsLoggerService()
+    public function testInvokeAddsLoggerService(): void
     {
         $this->configArray['caches']['default']['logger'] = 'my-logger';
         $mockLogger = $this->createMock(LoggerInterface::class);
@@ -198,18 +203,18 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->mockContainer->expects($this->any())
             ->method('get')
-            ->will($this->returnValueMap($mapGet));
+            ->willReturnMap($mapGet);
 
         $pool = $this->factory->__invoke($this->mockContainer);
 
         $this->assertInstanceOf(ArrayCachePool::class, $pool);
     }
 
-    public function testInvokeWithNamespace()
+    public function testInvokeWithNamespace(): void
     {
         $this->configArray['caches']['default']['namespace'] = 'my-namespace';
 
@@ -221,7 +226,7 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->mockContainer->expects($this->once())
             ->method('get')
@@ -233,7 +238,7 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(NamespacedCachePool::class, $pool);
     }
 
-    public function testInvokeWithPrefix()
+    public function testInvokeWithPrefix(): void
     {
         $this->configArray['caches']['default']['prefix'] = 'my-prefix';
 
@@ -245,7 +250,7 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->mockContainer->expects($this->once())
             ->method('get')
@@ -257,7 +262,7 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(PrefixedCachePool::class, $pool);
     }
 
-    public function testInvokeWithConfigKey()
+    public function testInvokeWithConfigKey(): void
     {
         $map = [
             ['settings', false],
@@ -267,7 +272,7 @@ class PhpCacheFactoryTest extends TestCase
 
         $this->mockContainer->expects($this->any())
             ->method('has')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $this->mockContainer->expects($this->once())
             ->method('get')
@@ -279,11 +284,9 @@ class PhpCacheFactoryTest extends TestCase
         $this->assertInstanceOf(ApcCachePool::class, $pool);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidContainerException
-     */
-    public function testCallStaticNoContainer()
+    public function testCallStaticNoContainer(): void
     {
-        PhpCacheFactory::cacheTwo(new \stdClass());
+        $this->expectException(InvalidContainerException::class);
+        PhpCacheFactory::cacheTwo(new stdClass());
     }
 }

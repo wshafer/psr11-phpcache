@@ -1,25 +1,30 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WShafer\PSR11PhpCache\Test\Adapter;
+namespace WShafer\PSR11PhpCacheTests\Adapter;
 
 use Cache\Adapter\Chain\CachePoolChain;
 use Doctrine\Common\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
-use Psr\SimpleCache\CacheInterface;
 use WShafer\PSR11PhpCache\Adapter\ChainCacheAdapterFactory;
+use PHPUnit\Framework\MockObject\MockObject;
+use WShafer\PSR11PhpCache\Exception\InvalidConfigException;
 
+/**
+ * @covers \WShafer\PSR11PhpCache\Adapter\ChainCacheAdapterFactory
+ */
 class ChainCacheAdapterFactoryTest extends TestCase
 {
     /** @var ChainCacheAdapterFactory */
     protected $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface */
+    /** @var MockObject|ContainerInterface */
     protected $mockContainer;
 
-    public function setup()
+    protected function setup(): void
     {
         if (!interface_exists(Cache::class)) {
             $this->markTestSkipped('Doctrine Cache not installed.  Skipping test');
@@ -32,7 +37,7 @@ class ChainCacheAdapterFactoryTest extends TestCase
         $this->assertInstanceOf(ChainCacheAdapterFactory::class, $this->factory);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $cacheService = $this->createMock(CacheItemPoolInterface::class);
 
@@ -41,18 +46,19 @@ class ChainCacheAdapterFactoryTest extends TestCase
             ->with('my-service')
             ->willReturn($cacheService);
 
-        $instance = $this->factory->__invoke($this->mockContainer, [
-            'services' => ['my-service']
-        ]);
+        $instance = $this->factory->__invoke(
+            $this->mockContainer,
+            [
+                'services' => ['my-service']
+            ]
+        );
 
         $this->assertInstanceOf(CachePoolChain::class, $instance);
     }
 
-    /**
-     * @expectedException \WShafer\PSR11PhpCache\Exception\InvalidConfigException
-     */
-    public function testInvokeMissingServersAndService()
+    public function testInvokeMissingServersAndService(): void
     {
+        $this->expectException(InvalidConfigException::class);
         $this->factory->__invoke($this->mockContainer, []);
     }
 }
