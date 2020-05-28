@@ -394,7 +394,6 @@ return [
 ```
 
 
-
 ### Module Config
 If you're not using the [Zend Component Installer](https://github.com/zendframework/zend-component-installer) you will 
 also need to register the Module.
