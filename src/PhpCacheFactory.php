@@ -18,6 +18,9 @@ use WShafer\PSR11PhpCache\Config\ConfigCollection;
 use WShafer\PSR11PhpCache\Exception\InvalidContainerException;
 use WShafer\PSR11PhpCache\Exception\MissingCacheConfigException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class PhpCacheFactory
 {
     protected $configKey = 'default';
