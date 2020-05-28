@@ -13,9 +13,7 @@
     "license" : "BSD-2-Clause",
     "require": {
         "php": "^7.3",
-        "cache/cache": "^1.0",
-        "zendframework/zend-config": "^3.1",
-        "zendframework/zend-servicemanager": "^3.3"
+        "cache/cache": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0.",
