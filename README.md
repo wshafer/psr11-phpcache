@@ -348,7 +348,7 @@ config/autoload/cache.global.php
 ```php
 <?php
 return [
-    'service_manager' => [
+    'dependencies' => [
        'factories' => [
            // Cache using the default keys.
            'cache' => \WShafer\PSR11PhpCache\PhpCacheFactory::class,
