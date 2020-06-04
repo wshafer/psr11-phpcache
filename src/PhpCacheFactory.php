@@ -13,42 +13,49 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use WShafer\PSR11PhpCache\Adapter\AdapterMapper;
 use WShafer\PSR11PhpCache\Adapter\FactoryInterface;
-use WShafer\PSR11PhpCache\Config\MainConfig;
+use WShafer\PSR11PhpCache\Config\Config;
+use WShafer\PSR11PhpCache\Config\ConfigCollection;
 use WShafer\PSR11PhpCache\Exception\InvalidContainerException;
 use WShafer\PSR11PhpCache\Exception\MissingCacheConfigException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class PhpCacheFactory
 {
     protected $configKey = 'default';
 
+    public function __construct(string $configKey = 'default')
+    {
+        $this->configKey = $configKey;
+    }
+
     public function __invoke(ContainerInterface $container): CacheItemPoolInterface
     {
-        $config = $this->getConfig($container);
+        $configCollection = $this->getConfigCollection($container);
 
-        $serviceName = $this->getConfigKey();
+        $config = $configCollection->getCacheConfig($this->configKey);
 
-        $serviceConfig = $config->getCacheConfig($serviceName);
-
-        $pool = $this->getCachePool($container, $serviceConfig);
+        $pool = $this->getCachePool($container, $config);
 
         if (
             $pool instanceof LoggerAwareInterface
-            && $serviceConfig->getLogger()
+            && $config->getLoggerServiceName()
         ) {
             /** @var LoggerInterface $logger */
-            $logger = $container->get($serviceConfig->getLogger());
+            $logger = $container->get($config->getLoggerServiceName());
             $pool->setLogger($logger);
         }
 
         if (
             $pool instanceof HierarchicalPoolInterface
-            && !empty($serviceConfig->getNamespace())
+            && !empty($config->getNamespace())
         ) {
-            return new NamespacedCachePool($pool, $serviceConfig->getNamespace());
+            return new NamespacedCachePool($pool, $config->getNamespace());
         }
 
-        if (!empty($serviceConfig->getPrefix())) {
-            return new PrefixedCachePool($pool, $serviceConfig->getPrefix());
+        if (!empty($config->getPrefix())) {
+            return new PrefixedCachePool($pool, $config->getPrefix());
         }
 
         return $pool;
@@ -72,26 +79,15 @@ class PhpCacheFactory
                 'Argument 0 must be an instance of a PSR-11 container'
             );
         }
-        $factory = new static();
-        $factory->setConfigKey($name);
+        $factory = new static($name);
         return $factory($arguments[0]);
     }
 
-    public function getConfigKey(): string
+    protected function getConfigCollection(ContainerInterface $container): ConfigCollection
     {
-        return $this->configKey;
-    }
-
-    public function setConfigKey(string $key): void
-    {
-        $this->configKey = $key;
-    }
-
-    protected function getConfig(ContainerInterface $container): MainConfig
-    {
-        $configArray = $this->getConfigArray($container);
-
-        return new MainConfig($configArray);
+        return new ConfigCollection(
+            $this->getConfigArray($container)
+        );
     }
 
     protected function getConfigArray(ContainerInterface $container): array
@@ -110,7 +106,7 @@ class PhpCacheFactory
             return $container->get('settings')['caches'] ?? [];
         }
 
-        // Zend uses config key
+        // Laminas/Zend uses config key
         if ($container->has('config')) {
             return $container->get('config')['caches'] ?? [];
         }
@@ -120,7 +116,7 @@ class PhpCacheFactory
         );
     }
 
-    protected function getCachePool(ContainerInterface $container, MainConfig $serviceConfig): CacheItemPoolInterface
+    protected function getCachePool(ContainerInterface $container, Config $serviceConfig): CacheItemPoolInterface
     {
         $type = $serviceConfig->getType();
         $factory = $this->getFactory($type);

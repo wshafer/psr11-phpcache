@@ -12,9 +12,11 @@
 - [Containers](#containers)
     - [Pimple](#pimple-example)
     - [Zend Service Manager](#zend-service-manager)
+    - [Laminas Service Manager](#laminas-service-manager)
 - [Frameworks](#frameworks)
     - [Zend Expressive](#zend-expressive)
     - [Zend Framework 3](#zend-framework-3)
+    - [Mezzio](#mezzio)
     - [Slim](#slim)
 - [Configuration](#configuration)
     - [Minimal Configuration](#minimal-configuration)
@@ -176,6 +178,55 @@ $container->setService('config', [
 ]);
 ```
 
+## Laminas Service Manager
+
+```php
+$container = new \Laminas\ServiceManager\ServiceManager([
+    'factories' => [
+        // Cache using the default keys.
+        'cache' => \WShafer\PSR11PhpCache\PhpCacheFactory::class,
+        
+        // Another Cache using a different cache configuration
+        'otherCache' => [\WShafer\PSR11PhpCache\PhpCacheFactory::class, 'cacheTwo'],
+    ]
+]);
+
+$container->setService('config', [
+    'caches' => [
+        /*
+         * At the bare minimum you must include a default cache config.
+         * Otherwise a void cache will be used and operations will be 
+         * be sent to the void.
+         */
+        'default' => [
+            'type'      => 'void',         // Required : Type of adapter
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [],             // Optional : Adapter Specific Options
+        ],
+        
+        // Another Cache
+        'cacheTwo' => [
+            'type'      => 'memcached',    // Required : Type of adapter
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [],             // Optional : Adapter Specific Options
+        ],
+        
+        // Cache Chain
+        'chained' => [
+            'type' => 'chain',                              // Required : Type of adapter
+            'options' => [
+                'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+            ]
+        ],
+    ],
+]);
+```
+
 # Frameworks
 Any framework that use a PSR-11 should work fine.   Below are some specific framework examples to get you started
 
@@ -287,6 +338,61 @@ return [
     ],
 ];
 ```
+
+## Mezzio
+You'll need to add configuration and register the services you'd like to use.  There are number of ways to do that
+but the recommended way is to create a new config file `config/autoload/cache.global.php`
+
+### Configuration
+config/autoload/cache.global.php
+```php
+<?php
+return [
+    'service_manager' => [
+       'factories' => [
+           // Cache using the default keys.
+           'cache' => \WShafer\PSR11PhpCache\PhpCacheFactory::class,
+           
+           // Another Cache using a different cache configuration
+           'otherCache' => [\WShafer\PSR11PhpCache\PhpCacheFactory::class, 'cacheTwo'],
+       ]
+    ],
+    
+    'caches' => [
+        /*
+         * At the bare minimum you must include a default cache config.
+         * Otherwise a void cache will be used and operations will be 
+         * be sent to the void.
+         */
+        'default' => [
+            'type'      => 'void',         // Required : Type of adapter
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [],             // Optional : Adapter Specific Options
+        ],
+        
+        // Another Cache
+        'cacheTwo' => [
+            'type'      => 'memcached',    // Required : Type of adapter
+            'namespace' => 'my-namespace', // Optional : Namespace
+            'prefix'    => 'prefix_',      // Optional : Prefix.  If a Namespace is configured and the adapter supports it, the Namespace will me used instead.
+            'logger'    => 'my-logger',    // Optional : PSR-1 Logger Service Name
+            'options'   => [],             // Optional : Adapter Specific Options
+        ],
+        
+        // Cache Chain
+        'chained' => [
+            'type' => 'chain',                              // Required : Type of adapter
+            'options' => [
+                'services'      => ['default', 'cacheTwo'], // Required : An array of pre-configured cache service names
+                'skipOnFailure' => false,                   // Optional : If true we will remove a pool form the chain if it fails. (Default: false)
+            ]
+        ],
+    ],
+];
+```
+
 
 ### Module Config
 If you're not using the [Zend Component Installer](https://github.com/zendframework/zend-component-installer) you will 
