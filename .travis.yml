@@ -2,8 +2,9 @@ language: php
 
 build:
   image: default-bionic
-  php:
-    - 8.2
+  environment:
+    php:
+      - 8.2
 
 cache:
   directories:
