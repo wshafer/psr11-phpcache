@@ -10,20 +10,9 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-services:
-  - mongodb
-  - memcached
-  - redis-server
-
 before_script:
   - composer self-update
   - composer install --prefer-dist -n
-
-before_install:
-  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
   - ./vendor/bin/phpunit tests/ --coverage-clover clover.xml
