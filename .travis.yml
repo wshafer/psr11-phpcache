@@ -1,7 +1,10 @@
 language: php
 
-php:
-  - 7.3
+build:
+  image: default-bionic
+  environment:
+    php:
+      - 8.2
 
 cache:
   directories:
